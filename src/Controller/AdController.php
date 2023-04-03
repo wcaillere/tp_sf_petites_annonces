@@ -23,6 +23,13 @@ class AdController extends AbstractController
         return $this->render('ad/index.html.twig', ['adList' => $repository->findAll()]);
     }
 
+    #[Route('/details/{id}', name: 'details', requirements: ['id' => '\d+'])]
+    public function details(AdRepository $repository, Ad $ad): Response
+    {
+        $fundAd = $repository->find($ad);
+        return $this->render('ad/details.html.twig', ['ad' => $fundAd]);
+    }
+
     #[Route('/form', name: 'new')]
     public function addEdit(StatusRepository       $statusRepository,
                             UserRepository         $userRepository,
@@ -31,7 +38,7 @@ class AdController extends AbstractController
     {
         $ad = new Ad();
 
-        $ad->setAuthor($userRepository->findOneBy(['id' => '4']));
+        $ad->setAuthor($this->getUser());
         $ad->setStatus($statusRepository->findOneBy(['name' => 'en cours']));
 
         $form = $this->createForm(AdType::class, $ad, []);

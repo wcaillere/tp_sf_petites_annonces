@@ -22,7 +22,7 @@
                     </p>
                     <hr>
                     <p>{{ ad.text | slice(0, 40) }}...</p>
-                    <a href="#">en savoir plus</a>
+                    <a href="{{ path('ad_details', {'id': ad.id}) }}">en savoir plus</a>
                 </div>
             {% endif %}
         {% endfor %}
