@@ -5,8 +5,20 @@ Home
 {% endblock %}
 
 {% block body %}
-    <h1>Liste des petites annonces</h1>
-    {% for ad in adList %}
-        {{ ad.title }}
-    {% endfor %}
+    <h1 class="text-white">Liste des petites annonces</h1>
+    <div class="row d-flex justify-content-center">
+        {% for ad in adList %}
+            {% if ad.status.name == "en cours" %}
+            <div class="col-2 p-3 m-3 bg-success">
+                <h3>{{ ad.title }}</h3>
+                <h4 class="my-3">{{ ad.category.name }}</h4>
+                <p>par {{ ad.author.firstName }} {{ ad.author.lastName | upper }}<br>
+                    {{ ad.zipCode }} {{ ad.city }}
+                </p>
+
+                <a>{{ ad.text | slice(0, 20) }}...</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
