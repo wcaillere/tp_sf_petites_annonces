@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Recherche
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <table class="table w-50">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Catégorie</th>
+                <th>Utilisateur</th>
+                <th>Ville</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ad in search %}
+                <tr>
+                    <td>{{ ad.title }}</td>
+                    <td>{{ ad.category.name }}</td>
+                    <td>{{ ad.author.firstName }} {{ ad.author.lastName }}</td>
+                    <td>{{ ad.city }}</td>
+                    <td><a href="#">En savoir plus</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}
+

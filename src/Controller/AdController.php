@@ -52,4 +52,12 @@ class AdController extends AbstractController
             ]
         );
     }
+
+    #[Route('/search/', name: 'search')]
+    public function search(AdRepository $repository, Request $request): Response
+    {
+        $searchInput = $request->query->get('research');
+        $adList = $repository->searchAd($searchInput);
+        return $this->render('ad/search.html.twig', ['search' => $adList]);
+    }
 }

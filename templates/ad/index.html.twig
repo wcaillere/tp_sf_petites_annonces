@@ -6,6 +6,10 @@
 
 {% block body %}
     <h1>Liste des petites annonces</h1>
+    <form method="GET" action="{{ path('ad_search') }}">
+        <label>Recherchez l'annonce de vos rêves !</label>
+        <input id="research" name="research" placeholder="Votre recherche...">
+    </form>
     <div class="row d-flex justify-content-center">
         {% for ad in adList %}
             {% if ad.status.name == "en cours" %}

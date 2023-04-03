@@ -15,9 +15,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request                     $request,
+    public function register(Request $request,
                              UserPasswordHasherInterface $userPasswordHasher,
-                             EntityManagerInterface      $entityManager): Response
+                             EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -52,5 +52,10 @@ class RegistrationController extends AbstractController
             'registration/login.html.twig',
             ['error' => $auth->getLastAuthenticationError()]
         );
+    }
+
+    #[Route('/logout', name: 'app_logout')]
+    public function logout()
+    {
     }
 }

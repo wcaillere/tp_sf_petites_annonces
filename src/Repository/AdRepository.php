@@ -23,20 +23,41 @@ class AdRepository extends ServiceEntityRepository
 
     public function save(Ad $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()
+             ->persist($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getEntityManager()
+                 ->flush();
         }
     }
 
     public function remove(Ad $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()
+             ->remove($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getEntityManager()
+                 ->flush();
         }
+    }
+
+    public function searchAd(string $search)
+    {
+        return $this->createQueryBuilder('ad')
+                    ->select('ad')
+                    ->join('ad.category', 'c')
+                    ->join('ad.author', 'a')
+                    ->join('ad.status', 'st')
+                    ->where('ad.title LIKE :search')
+                    ->orWhere('ad.text LIKE :search')
+                    ->orWhere('ad.city LIKE :search')
+                    ->andWhere('st.name = :status')
+                    ->setParameter(':status', 'en cours')
+                    ->setParameter(':search', "%$search%")
+                    ->getQuery()
+                    ->getResult();
     }
 
 //    /**
