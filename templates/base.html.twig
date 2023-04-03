@@ -14,7 +14,10 @@
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </head>
-<body class="container-fluid p-3">
+<body>
+{% include '_fragments/_navbar.html.twig' %}
+<div class="container-fluid p-3">
     {% block body %}{% endblock %}
+</div>
 </body>
 </html>
