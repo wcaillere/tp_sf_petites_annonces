@@ -31,15 +31,17 @@ class AdController extends AbstractController
     }
 
     #[Route('/form', name: 'new')]
+    #[Route('form/{id}', name: 'update', requirements: ['id' => '\d+'])]
     public function addEdit(StatusRepository       $statusRepository,
-                            UserRepository         $userRepository,
                             EntityManagerInterface $em,
-                            Request                $request): Response
+                            Request                $request,
+                            Ad                     $ad = null): Response
     {
-        $ad = new Ad();
-
-        $ad->setAuthor($this->getUser());
-        $ad->setStatus($statusRepository->findOneBy(['name' => 'en cours']));
+        if ($ad == null) {
+            $ad = new Ad();
+            $ad->setAuthor($this->getUser());
+            $ad->setStatus($statusRepository->findOneBy(['name' => 'en cours']));
+        }
 
         $form = $this->createForm(AdType::class, $ad, []);
         $form->handleRequest($request);

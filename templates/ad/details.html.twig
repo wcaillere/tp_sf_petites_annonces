@@ -16,7 +16,7 @@
             <p class="bg-white p-3">{{ ad.text }}</p>
             <div>
                 {% if app.user.email == ad.author.email %}
-                    <a class="btn btn-primary" href="#">Modifier</a>
+                    <a class="btn btn-primary" href="{{ path('ad_update', {'id': ad.id}) }}">Modifier</a>
                     <a class="btn btn-danger mx-3" href="#">Annuler</a>
                     <a class="btn btn-success" href="#">Clôturer</a>
                 {% endif %}
