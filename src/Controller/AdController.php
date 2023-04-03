@@ -8,11 +8,13 @@ use App\Form\AdType;
 use App\Repository\AdRepository;
 use App\Repository\StatusRepository;
 use App\Repository\UserRepository;
+use App\Security\Voter\AdVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/', name: 'ad_')]
 class AdController extends AbstractController
@@ -30,6 +32,7 @@ class AdController extends AbstractController
         return $this->render('ad/details.html.twig', ['ad' => $fundAd]);
     }
 
+    #[isGranted('ROLE_USER')]
     #[Route('/form', name: 'new')]
     #[Route('form/{id}', name: 'update', requirements: ['id' => '\d+'])]
     public function addEdit(StatusRepository       $statusRepository,
@@ -41,6 +44,8 @@ class AdController extends AbstractController
             $ad = new Ad();
             $ad->setAuthor($this->getUser());
             $ad->setStatus($statusRepository->findOneBy(['name' => 'en cours']));
+        } else {
+            $this->denyAccessUnlessGranted(AdVoter::EDIT, $ad);
         }
 
         $form = $this->createForm(AdType::class, $ad, []);
