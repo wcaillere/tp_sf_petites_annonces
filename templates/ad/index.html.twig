@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des petites annonces</h1>
+    {% for ad in adList %}
+        {{ ad.title }}
+    {% endfor %}
+{% endblock %}
