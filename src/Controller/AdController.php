@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\Status;
 use App\Factory\UserFactory;
 use App\Form\AdType;
 use App\Repository\AdRepository;
@@ -28,8 +29,7 @@ class AdController extends AbstractController
     #[Route('/details/{id}', name: 'details', requirements: ['id' => '\d+'])]
     public function details(AdRepository $repository, Ad $ad): Response
     {
-        $fundAd = $repository->find($ad);
-        return $this->render('ad/details.html.twig', ['ad' => $fundAd]);
+        return $this->render('ad/details.html.twig', ['ad' => $ad]);
     }
 
     #[isGranted('ROLE_USER')]
@@ -73,5 +73,29 @@ class AdController extends AbstractController
         $searchInput = $request->query->get('research');
         $adList = $repository->searchAd($searchInput);
         return $this->render('ad/search.html.twig', ['search' => $adList]);
+    }
+
+    #[Route('/cancel/{id}', name: 'cancel')]
+    public function cancelAd(Ad                     $ad,
+                             StatusRepository       $repository,
+                             EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted(AdVoter::EDIT, $ad);
+        $ad->setStatus($repository->findOneBy(['name' => 'annulée']));
+        $entityManager->flush();
+
+        return $this->redirectToRoute('ad_index');
+    }
+
+    #[Route('/delete/{id}', name: 'delete')]
+    public function deleteAd(Ad                     $ad,
+                             StatusRepository       $repository,
+                             EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted(AdVoter::EDIT, $ad);
+        $ad->setStatus($repository->findOneBy(['name' => 'terminée']));
+        $entityManager->flush();
+
+        return $this->redirectToRoute('ad_index');
     }
 }

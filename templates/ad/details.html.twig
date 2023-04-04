@@ -15,10 +15,12 @@
             </p>
             <p class="bg-white p-3">{{ ad.text }}</p>
             <div>
-                {% if app.user.email == ad.author.email %}
-                    <a class="btn btn-primary" href="{{ path('ad_update', {'id': ad.id}) }}">Modifier</a>
-                    <a class="btn btn-danger mx-3" href="#">Annuler</a>
-                    <a class="btn btn-success" href="#">Clôturer</a>
+                {% if app.user is not null %}
+                    {% if app.user.email == ad.author.email %}
+                        <a class="btn btn-primary" href="{{ path('ad_update', {'id': ad.id}) }}">Modifier</a>
+                        <a class="btn btn-danger mx-3" href="{{ path('ad_cancel', {'id': ad.id}) }}">Annuler</a>
+                        <a class="btn btn-success" href="{{ path('ad_delete', {'id': ad.id}) }}">Clôturer</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
